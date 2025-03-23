@@ -54,5 +54,6 @@ public class ProductBasket {
 
     public void clearBasket() {
         Arrays.fill(innerBasket, null);
+        System.out.println("Корзина очищена");
     }
 }
