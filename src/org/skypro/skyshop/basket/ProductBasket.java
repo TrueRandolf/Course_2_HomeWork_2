@@ -2,6 +2,8 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.Arrays;
+
 public class ProductBasket {
     private final Product[] innerBasket = new Product[5];
 
@@ -51,9 +53,6 @@ public class ProductBasket {
     }
 
     public void clearBasket() {
-        for (int i = 0; i < innerBasket.length; i++) {
-            innerBasket[i] = null;
-        }
-
+        Arrays.fill(innerBasket, null);
     }
 }
