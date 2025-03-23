@@ -3,8 +3,8 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class Product {
-    private String name;
-    private int price;
+    private final String name;
+    private final int price;
 
     public Product(String name, int price) {
         this.name = name;
@@ -25,6 +25,11 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return price == product.price && Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price);
     }
 }
 

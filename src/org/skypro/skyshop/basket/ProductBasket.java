@@ -5,8 +5,6 @@ import org.skypro.skyshop.product.Product;
 public class ProductBasket {
     private final Product[] innerBasket = new Product[5];
 
-    public ProductBasket() {
-    }
 
     public void addProductToBasket(Product product) {
         for (int i = 0; i < innerBasket.length; i++) {
@@ -29,14 +27,14 @@ public class ProductBasket {
     }
 
     public void printBasket() {
-        boolean nEmpty = false;
+        boolean isEmpty = false;
         for (Product prod : innerBasket) {
             if (prod != null) {
                 System.out.println(prod);
-                nEmpty = true;
+                isEmpty = true;
             }
         }
-        if (nEmpty) {
+        if (isEmpty) {
             System.out.println("Итого:<" + getSumPrice() + ">");
             return;
         }
