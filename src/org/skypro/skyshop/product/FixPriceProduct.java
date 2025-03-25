@@ -3,7 +3,7 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class FixPriceProduct extends Product {
-    private String name = getName();
+    private final String name = getName();
     private static final int PRICE = 260;
 
     public FixPriceProduct(String name) {

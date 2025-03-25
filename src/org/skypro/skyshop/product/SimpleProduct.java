@@ -3,8 +3,8 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class SimpleProduct extends Product {
-    private String name = getName();
-    private int price;
+    private final String name = getName();
+    private final int price;
 
     public SimpleProduct(String name, int price) {
         super(name);

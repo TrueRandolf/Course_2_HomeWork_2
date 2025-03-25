@@ -3,10 +3,10 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class DiscountProduct extends Product {
-    private String name = getName();
-    private int basePrice;
-    private int discountPercent;
-    private int discountPrice;
+    private final String name = getName();
+    private final int basePrice;
+    private final int discountPercent;
+    private final int discountPrice;
 
     public DiscountProduct(String name, int basePrice, int discountPercent) {
         super(name);
