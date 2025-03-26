@@ -12,16 +12,15 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) {
 
-        final int STORAGESIZE = 10;
+        final int storageSize = 10;
         String searchString = "Шуруп";
 
-        System.out.println(">создание хранилища вместимостью " + STORAGESIZE + " элементов");
-        SearchEngine thatStorage = new SearchEngine(STORAGESIZE);
+        System.out.println(">создание хранилища вместимостью " + storageSize + " элементов");
+        SearchEngine thatStorage = new SearchEngine(storageSize);
         System.out.println(">создано");
         System.out.println();
 
         System.out.println(">Поиск в пустом хранилище по вхождению \"" + searchString + "\":");
-        System.out.println(Arrays.toString(thatStorage.searchRepresent(searchString)));
         System.out.println(Arrays.toString(thatStorage.searchObj(searchString)));
         System.out.println();
 
@@ -48,30 +47,22 @@ public class App {
         System.out.println();
 
         System.out.println(">Поиск в заполненном хранилище по вхождению \"" + searchString + "\"");
-        System.out.println(Arrays.toString(thatStorage.searchRepresent(searchString)));
-        System.out.println();
         System.out.println(Arrays.toString(thatStorage.searchObj(searchString)));
         System.out.println();
 
 
         searchString = "Рымболт";
         System.out.println(">Поиск в заполненном хранилище по вхождению \"" + searchString + "\"");
-        System.out.println(Arrays.toString(thatStorage.searchRepresent(searchString)));
-        System.out.println();
         System.out.println(Arrays.toString(thatStorage.searchObj(searchString)));
         System.out.println();
 
         searchString = "Болт";
         System.out.println(">Поиск в заполненном хранилище по вхождению \"" + searchString + "\"");
-        System.out.println(Arrays.toString(thatStorage.searchRepresent(searchString)));
-        System.out.println();
         System.out.println(Arrays.toString(thatStorage.searchObj(searchString)));
         System.out.println();
 
         searchString = "Гвоздь";
         System.out.println(">Поиск в заполненном хранилище по вхождению \"" + searchString + "\"");
-        System.out.println(Arrays.toString(thatStorage.searchRepresent(searchString)));
-        System.out.println();
         System.out.println(Arrays.toString(thatStorage.searchObj(searchString)));
         System.out.println();
 

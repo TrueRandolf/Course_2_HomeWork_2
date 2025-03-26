@@ -1,15 +1,12 @@
 package org.skypro.skyshop.Interfaces;
 
 public interface Searchable {
-    default String getSearchTerm() {
-        return null;
-    }
+    String getSearchTerm();
 
-    default String getContentType() {
-        return null;
-    }
+    String getContentType();
 
     default String getStringRepresentation() {
-        return null;
+        String string= "";
+        return "имя \"" + string + "\" тип \"" + getContentType() + "\"";
     }
 }

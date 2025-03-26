@@ -3,7 +3,6 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class FixPriceProduct extends Product {
-    private final String name = getName();
     private static final int PRICE = 260;
 
     public FixPriceProduct(String name) {
@@ -17,7 +16,7 @@ public class FixPriceProduct extends Product {
 
     @Override
     public String toString() {
-        return "<" + name + ">:Фиксированная цена<" + PRICE + ">";
+        return "<" + getName() + ">:Фиксированная цена<" + PRICE + ">";
     }
 
     @Override
@@ -30,11 +29,11 @@ public class FixPriceProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         FixPriceProduct that = (FixPriceProduct) o;
-        return Objects.equals(name, that.name);
+        return Objects.equals(getName(), getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name);
+        return Objects.hash(super.hashCode(), getName());
     }
 }

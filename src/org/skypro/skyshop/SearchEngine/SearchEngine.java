@@ -3,17 +3,17 @@ package org.skypro.skyshop.SearchEngine;
 import org.skypro.skyshop.Interfaces.Searchable;
 
 public class SearchEngine {
-    private final Searchable[] innerArray;
-    final int SEARCHLIMIT = 5;
+    private final Searchable[] innerSearchable;
+    private final int searchLimit = 5;
 
     public SearchEngine(int dimension) {
-        innerArray = new Searchable[dimension];
+        innerSearchable = new Searchable[dimension];
     }
 
     public void addNewObject(Searchable obj) {
-        for (int i = 0; i < innerArray.length; i++) {
-            if (innerArray[i] == null) {
-                innerArray[i] = obj;
+        for (int i = 0; i < innerSearchable.length; i++) {
+            if (innerSearchable[i] == null) {
+                innerSearchable[i] = obj;
                 return;
             }
         }
@@ -21,33 +21,18 @@ public class SearchEngine {
     }
 
     public Searchable[] searchObj(String searchTerm) {
-        System.out.println("/Поиск с выводом "+ SEARCHLIMIT + " объектов");
+        System.out.println("/Поиск с выводом " + searchLimit + " объектов");
         int searchCounter = 0;
-        Searchable[] searchResult = new Searchable[SEARCHLIMIT];
-        for (Searchable searchItem : innerArray) {
+        Searchable[] searchResult = new Searchable[searchLimit];
+        for (Searchable searchItem : innerSearchable) {
             if (searchItem != null && searchItem.getSearchTerm().contains(searchTerm)) {
                 searchResult[searchCounter++] = searchItem;
             }
-            if (searchCounter >= SEARCHLIMIT) {
+            if (searchCounter >= searchLimit) {
                 break;
             }
         }
         return searchResult;
-    }
-
-    public String[] searchRepresent(String searchTerm) {
-        System.out.println("/Поиск с выводом "+ SEARCHLIMIT + " обзоров");
-        int searchCounter = 0;
-        String[] searchResultRepresent = new String[SEARCHLIMIT];
-        for (Searchable searchItem : innerArray) {
-            if (searchItem != null && searchItem.getSearchTerm().contains(searchTerm)) {
-                searchResultRepresent[searchCounter++] = searchItem.getStringRepresentation();
-            }
-            if (searchCounter >= SEARCHLIMIT) {
-                break;
-            }
-        }
-        return searchResultRepresent;
     }
 
 }

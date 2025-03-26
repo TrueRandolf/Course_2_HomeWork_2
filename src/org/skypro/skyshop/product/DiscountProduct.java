@@ -3,7 +3,6 @@ package org.skypro.skyshop.product;
 import java.util.Objects;
 
 public class DiscountProduct extends Product {
-    private final String name = getName();
     private final int basePrice;
     private final int discountPercent;
     private final int discountPrice;
@@ -22,7 +21,7 @@ public class DiscountProduct extends Product {
 
     @Override
     public String toString() {
-        return "<" + name + ">:<" + discountPrice + ">(<" + discountPercent + ">%)";
+        return "<" + getName() + ">:<" + discountPrice + ">(<" + discountPercent + ">%)";
     }
 
     @Override
@@ -35,11 +34,11 @@ public class DiscountProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         DiscountProduct that = (DiscountProduct) o;
-        return basePrice == that.basePrice && discountPercent == that.discountPercent && discountPrice == that.discountPrice && Objects.equals(name, that.name);
+        return basePrice == that.basePrice && discountPercent == that.discountPercent && discountPrice == that.discountPrice && Objects.equals(getName(), getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, basePrice, discountPercent, discountPrice);
+        return Objects.hash(super.hashCode(), getName(), basePrice, discountPercent, discountPrice);
     }
 }
