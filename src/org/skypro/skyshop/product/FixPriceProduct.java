@@ -29,11 +29,11 @@ public class FixPriceProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         FixPriceProduct that = (FixPriceProduct) o;
-        return Objects.equals(getName(), getName());
+        return Objects.equals(getName(), name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName());
+        return Objects.hash(super.hashCode(), name);
     }
 }

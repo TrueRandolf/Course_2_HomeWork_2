@@ -17,7 +17,7 @@ public class SimpleProduct extends Product {
 
     @Override
     public String toString() {
-        return "<" + getName() + ">:<" + price + ">";
+        return "<" + name + ">:<" + price + ">";
     }
 
     @Override
@@ -30,11 +30,11 @@ public class SimpleProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SimpleProduct that = (SimpleProduct) o;
-        return price == that.price && Objects.equals(getName(), getName());
+        return price == that.price && Objects.equals(getName(), name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName(), price);
+        return Objects.hash(super.hashCode(), name, price);
     }
 }

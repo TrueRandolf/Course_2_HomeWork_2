@@ -21,7 +21,7 @@ public class DiscountProduct extends Product {
 
     @Override
     public String toString() {
-        return "<" + getName() + ">:<" + discountPrice + ">(<" + discountPercent + ">%)";
+        return "<" + name + ">:<" + discountPrice + ">(<" + discountPercent + ">%)";
     }
 
     @Override
@@ -34,11 +34,11 @@ public class DiscountProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         DiscountProduct that = (DiscountProduct) o;
-        return basePrice == that.basePrice && discountPercent == that.discountPercent && discountPrice == that.discountPrice && Objects.equals(getName(), getName());
+        return basePrice == that.basePrice && discountPercent == that.discountPercent && discountPrice == that.discountPrice && Objects.equals(getName(), name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName(), basePrice, discountPercent, discountPrice);
+        return Objects.hash(super.hashCode(), name, basePrice, discountPercent, discountPrice);
     }
 }

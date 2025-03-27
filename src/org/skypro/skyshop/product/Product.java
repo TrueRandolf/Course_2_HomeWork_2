@@ -5,7 +5,7 @@ import org.skypro.skyshop.Interfaces.Searchable;
 import java.util.Objects;
 
 public abstract class Product implements Searchable {
-    private final String name;
+    String name;
 
     public Product(String name) {
         this.name = name;
