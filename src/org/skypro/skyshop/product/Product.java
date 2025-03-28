@@ -5,9 +5,12 @@ import org.skypro.skyshop.Interfaces.Searchable;
 import java.util.Objects;
 
 public abstract class Product implements Searchable {
-    String name;
+    protected final String name;
 
     public Product(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Название продукта не может быть пустым");
+        }
         this.name = name;
     }
 
