@@ -8,8 +8,6 @@ import org.skypro.skyshop.product.DiscountProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
 
-import java.util.Arrays;
-
 public class App {
     public static void main(String[] args) {
 
@@ -48,7 +46,6 @@ public class App {
         }
 
         System.out.println(">исключения обработаны, элементы с ошибкой не внесены");
-
 
         System.out.println(">добавление валидных новых элементов:");
         thatStorage.addNewObject(new FixPriceProduct("Глухарь"));

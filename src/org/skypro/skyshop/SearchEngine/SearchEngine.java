@@ -37,19 +37,20 @@ public class SearchEngine {
     }
 
     public Searchable searchBestObject(String searchTerm) {
-        int counter = 0;
+        Searchable bestObject = null;
         int bestFind = 0;
-        for (int i = 0; i < innerSearchable.length; i++) {
-            if (innerSearchable[i] != null &&
-                    bestFind < subStringCount(innerSearchable[i].getSearchTerm(), searchTerm)) {
-                bestFind = subStringCount(innerSearchable[i].getSearchTerm(), searchTerm);
-                counter = i;
+        int subStringCount;
+        for (Searchable obj : innerSearchable) {
+            if (obj != null &&
+                    bestFind < (subStringCount = subStringCount(obj.getSearchTerm(), searchTerm))) {
+                bestFind = subStringCount;
+                bestObject = obj;
             }
         }
-        if (bestFind == 0) {
+        if (bestObject == null) {
             throw new BestResultNotFound(searchTerm);
         }
-        return innerSearchable[counter];
+        return bestObject;
     }
 
     private int subStringCount(String str, String subStr) {
