@@ -3,54 +3,57 @@ package org.skypro.skyshop.SearchEngine;
 import org.skypro.skyshop.Exeptions.BestResultNotFound;
 import org.skypro.skyshop.Interfaces.Searchable;
 
-public class SearchEngine {
-    private final Searchable[] innerSearchable;
-    private final int searchLimit = 5;
 
-    public SearchEngine(int dimension) {
-        innerSearchable = new Searchable[dimension];
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class SearchEngine {
+
+    LinkedList<Searchable> innerSearchable = new LinkedList<>();
+
+
+    public void addNewItem(Searchable item) {
+        innerSearchable.add(item);
+        //System.out.println("added item = " + item);
     }
 
-    public void addNewObject(Searchable obj) {
-        for (int i = 0; i < innerSearchable.length; i++) {
-            if (innerSearchable[i] == null) {
-                innerSearchable[i] = obj;
-                return;
+    public void clearAllItem(){
+        innerSearchable.clear();
+        System.out.println("Хранилище очищено");
+    }
+
+    public LinkedList<Searchable> searchItem(String searchTerm) {
+        LinkedList<Searchable> searchResult = new LinkedList<>();
+        Iterator<Searchable> iterator = innerSearchable.iterator();
+        while (iterator.hasNext()) {
+            Searchable item = iterator.next();
+            //System.out.println("item.getSearchTerm() = " + item.getSearchTerm());
+            if (item.getSearchTerm().contains(searchTerm)) {
+                searchResult.add(item);
             }
         }
-        System.out.println("Невозможно добавить еще элемент");
-    }
-
-    public Searchable[] searchObj(String searchTerm) {
-        System.out.println("Поиск с выводом " + searchLimit + " объектов");
-        int searchCounter = 0;
-        Searchable[] searchResult = new Searchable[searchLimit];
-        for (Searchable searchItem : innerSearchable) {
-            if (searchItem != null && searchItem.getSearchTerm().contains(searchTerm)) {
-                searchResult[searchCounter++] = searchItem;
-            }
-            if (searchCounter >= searchLimit) {
-                break;
-            }
+        if (searchResult.isEmpty()) {
+            System.out.println("Не найдено");
         }
         return searchResult;
     }
 
     public Searchable searchBestObject(String searchTerm) {
-        Searchable bestObject = null;
         int bestFind = 0;
         int subStringCount;
-        for (Searchable obj : innerSearchable) {
-            if (obj != null &&
-                    bestFind < (subStringCount = subStringCount(obj.getSearchTerm(), searchTerm))) {
+        Searchable bestResult = null;
+        Iterator<Searchable> iterator = innerSearchable.iterator();
+        while (iterator.hasNext()) {
+            Searchable item = iterator.next();
+            if (bestFind < (subStringCount = subStringCount(item.getSearchTerm(), searchTerm))) {
                 bestFind = subStringCount;
-                bestObject = obj;
+                bestResult = item;
             }
         }
-        if (bestObject == null) {
+        if (bestResult == null) {
             throw new BestResultNotFound(searchTerm);
         }
-        return bestObject;
+        return bestResult;
     }
 
     private int subStringCount(String str, String subStr) {
