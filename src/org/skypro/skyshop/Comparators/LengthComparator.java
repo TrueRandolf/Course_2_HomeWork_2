@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class LengthComparator implements Comparator<Searchable> {
     @Override
     public int compare(Searchable o1, Searchable o2) {
-        if (o1.getContentType() == "ARTICLE") {
+        if (o1.getContentType().equals("ARTICLE")) {
             return o2.getName().length() - o1.getName().length();
         }
         return 0;

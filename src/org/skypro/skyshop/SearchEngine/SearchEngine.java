@@ -18,7 +18,7 @@ public class SearchEngine {
     // Сначала всегда статьи по убыванию длины названия и алфавитном порядке
     // при равной длине назания,
     // потом товары, но строго в алфавитном порядке, без учета длины!
-    Comparator scmp = new ContentComparator().
+    Comparator<Searchable> scmp = new ContentComparator().
             thenComparing(new LengthComparator().
                     thenComparing(new AlphabeticalComparator()));
 
