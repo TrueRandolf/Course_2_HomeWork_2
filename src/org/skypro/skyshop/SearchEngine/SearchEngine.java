@@ -9,6 +9,7 @@ import org.skypro.skyshop.Interfaces.Searchable;
 import java.util.Comparator;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
 
@@ -18,31 +19,24 @@ public class SearchEngine {
     // Сначала всегда статьи по убыванию длины названия и алфавитном порядке
     // при равной длине назания,
     // потом товары, но строго в алфавитном порядке, без учета длины!
-    Comparator<Searchable> scmp = new ContentComparator().
+    Comparator<Searchable> searchComp = new ContentComparator().
             thenComparing(new LengthComparator().
                     thenComparing(new AlphabeticalComparator()));
 
-    Set<Searchable> innerFormat = new TreeSet<>(scmp);
-
     public void printAll() {
         if (innerSearchable.isEmpty()) {
-            System.out.println("список пуст");
+            System.out.println("Список пуст");
             return;
         }
-        for (Searchable tail : innerSearchable) {
-            System.out.println(tail);
-        }
+        innerSearchable.stream().forEach(System.out::println);
     }
 
     public void printAllFormat() {
         if (innerSearchable.isEmpty()) {
-            System.out.println("список пуст");
+            System.out.println("Список пуст");
             return;
         }
-        innerFormat.addAll(innerSearchable);
-        for (Searchable tail : innerFormat) {
-            System.out.println(tail);
-        }
+        innerSearchable.stream().sorted(searchComp).forEach(System.out::println);
     }
 
     public void addNewItem(Searchable searchable) {
@@ -50,29 +44,23 @@ public class SearchEngine {
     }
 
     public Set<Searchable> searchItem(String searchItem) {
-        Set<Searchable> searchResult = new TreeSet<>(scmp);
-        if (innerSearchable.isEmpty()) {
-            System.out.println("Не найдено");
-            return searchResult;
+        TreeSet<Searchable> result = innerSearchable.stream()
+                .filter(s -> s.getName().contains(searchItem))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(searchComp)));
+        if(result.isEmpty()){
+            System.out.println("Список пуст");
         }
-        for (Searchable search : innerSearchable) {
-            if (search.getName().contains(searchItem)) {
-                searchResult.add(search);
-            }
-        }
-        return searchResult;
+        return result;
     }
 
-
     public Searchable searchBestObject(String searchTerm) {
-
-        if (searchItem(searchTerm).isEmpty()) {
+        if (innerSearchable.isEmpty()) {
             throw new BestResultNotFound(searchTerm);
         }
         Searchable bestResult = null;
         int bestFind = 0;
         int subStringCount;
-        for (Searchable searchObj : searchItem(searchTerm)) {
+        for (Searchable searchObj : innerSearchable) {
             //System.out.println(" = " + searchObj.getSearchTerm());
             if (bestFind < (subStringCount = subStringCount(searchObj.getSearchTerm(), searchTerm))) {
                 bestFind = subStringCount;
@@ -84,7 +72,6 @@ public class SearchEngine {
         }
         return bestResult;
     }
-
 
     private int subStringCount(String str, String subStr) {
         int count = 0;

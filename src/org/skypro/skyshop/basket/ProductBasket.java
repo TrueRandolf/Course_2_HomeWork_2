@@ -6,30 +6,43 @@ import java.util.*;
 
 public class ProductBasket {
 
-    Set<Product> innerBasket = new HashSet<>();
+    Map<String, LinkedList<Product>> innerBasket = new HashMap<>();
 
     public void addToBasket(Product product) {
-        innerBasket.add(product);
+        if (innerBasket.containsKey(product.getName())) {
+            innerBasket.get(product.getName()).add(product);
+        } else {
+            LinkedList<Product> mapTail = new LinkedList<>();
+            mapTail.add(product);
+            innerBasket.put(product.getName(), mapTail);
+        }
     }
 
     public void printBasket() {
         if (innerBasket.isEmpty()) {
-            System.out.println("список пуст");
+            System.out.println("в корзине пусто");
             return;
         }
+        innerBasket
+                .entrySet().stream()
+                .flatMap(Map -> Map.getValue().stream())
+                .forEach(System.out::println);
+        System.out.println("Итого:<" + getSumPrice() + ">");
+        System.out.println("Специальных товаров:<" + getSpecialCount() + ">");
+    }
 
-        int specialCounter = 0;
-        long sumPrice = 0;
-        for (Product tail : innerBasket) {
-            sumPrice += tail.getPrice();
-            if (tail.isSpecial()) {
-                specialCounter++;
-            }
-            System.out.println(tail);
-        }
-        System.out.println("Итого:<" + sumPrice + ">");
-        System.out.println("Специальных товаров:<" + specialCounter + ">");
+    private long getSumPrice() {
+        return innerBasket
+                .entrySet().stream()
+                .flatMap(Map -> Map.getValue().stream())
+                .mapToInt(Product::getPrice).sum();
+    }
 
+    private long getSpecialCount() {
+        return innerBasket
+                .entrySet().stream()
+                .flatMap(Map -> Map.getValue().stream())
+                .filter(Product::isSpecial).count();
     }
 
     public void clearBasket() {
@@ -39,25 +52,12 @@ public class ProductBasket {
 
     public LinkedList<Product> removeProductFromBasket(String name) {
         LinkedList<Product> removedProducts = new LinkedList<>();
-        if (innerBasket.isEmpty()) {
+        if (!innerBasket.containsKey(name)) {
             System.out.println("Список пуст");
             return removedProducts;
         }
-        Product product;
-        Iterator<Product> iterator = innerBasket.iterator();
-        while (iterator.hasNext()) {
-            product = iterator.next();
-            if (product.getName().equals(name)) {
-                removedProducts.add(product);
-            }
-        }
-        if (removedProducts.isEmpty()) {
-            System.out.println("список пуст");
-            return removedProducts;
-        }
-        for (Product reProduct : removedProducts) {
-            innerBasket.remove(reProduct);
-        }
+        removedProducts = innerBasket.get(name);
+        innerBasket.remove(name);
         return removedProducts;
     }
 
