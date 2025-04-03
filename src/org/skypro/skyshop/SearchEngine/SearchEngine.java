@@ -1,63 +1,63 @@
 package org.skypro.skyshop.SearchEngine;
 
+import org.skypro.skyshop.Comparators.ContentComparator;
+import org.skypro.skyshop.Comparators.LengthComparator;
+import org.skypro.skyshop.Comparators.AlphabeticalComparator;
 import org.skypro.skyshop.Exeptions.BestResultNotFound;
 import org.skypro.skyshop.Interfaces.Searchable;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Comparator;
+
+import java.util.*;
 
 public class SearchEngine {
 
-    Map<String, LinkedList<Searchable>> innerSearchable = new HashMap<>();
+    Set<Searchable> innerSearchable = new HashSet<>();
+
+    // Этот огород для форматирования TreeSet. Хочу так:
+    // Сначала всегда статьи по убыванию длины названия и алфавитном порядке
+    // при равной длине назания,
+    // потом товары, но строго в алфавитном порядке, без учета длины!
+    Comparator<Searchable> scmp = new ContentComparator().
+            thenComparing(new LengthComparator().
+                    thenComparing(new AlphabeticalComparator()));
+
+    Set<Searchable> innerFormat = new TreeSet<>(scmp);
 
     public void printAll() {
         if (innerSearchable.isEmpty()) {
-            System.out.println("пусто");
+            System.out.println("список пуст");
             return;
         }
-        for (LinkedList<Searchable> tail : innerSearchable.values()) {
-            for (Searchable searchable : tail) {
-                System.out.println(searchable);
-            }
+        for (Searchable tail : innerSearchable) {
+            System.out.println(tail);
+        }
+    }
+
+    public void printAllFormat() {
+        if (innerSearchable.isEmpty()) {
+            System.out.println("список пуст");
+            return;
+        }
+        innerFormat.addAll(innerSearchable);
+        for (Searchable tail : innerFormat) {
+            System.out.println(tail);
         }
     }
 
     public void addNewItem(Searchable searchable) {
-//        Распарсил имя из getSearchTerm()
-//        Можно было добавить метод getname() в интерфейс Searchable, как советовал Герман ИИ
-//        но он тот еще советник. К тому же:
-//            1.умножать сущности без нужды-как-то...
-//            2.тяжело в учении - легко в бою (вдруг у меня нет доступа к классу?)
-//            3.элементарная задача, на мой взгляд
-
-        String name;
-        if (searchable.getContentType().equals("ARTICLE")) {
-            String term = searchable.getSearchTerm();
-            name = term.substring(0, term.indexOf('\n'));
-        } else {
-            name = searchable.getSearchTerm();
-        }
-
-        if (innerSearchable.containsKey(name)) {
-            innerSearchable.get(name).add(searchable);
-        } else {
-            LinkedList<Searchable> mapTail = new LinkedList<>();
-            mapTail.add(searchable);
-            innerSearchable.put(name, mapTail);
-        }
+        innerSearchable.add(searchable);
     }
 
-    public Map<String, LinkedList<Searchable>> searchItem(String searchItem) {
-        Map<String, LinkedList<Searchable>> searchResult = new TreeMap<>();
-        if (innerSearchable.isEmpty() || !innerSearchable.containsKey(searchItem)) {
+    public Set<Searchable> searchItem(String searchItem) {
+        Set<Searchable> searchResult = new TreeSet<>(scmp);
+        if (innerSearchable.isEmpty()) {
             System.out.println("Не найдено");
             return searchResult;
         }
-        for (Map.Entry<String, LinkedList<Searchable>> searchMap : innerSearchable.entrySet()) {
-            if (searchMap.getKey().contains(searchItem)) {
-                searchResult.put(searchMap.getKey(), searchMap.getValue());
+        for (Searchable search : innerSearchable) {
+            if (search.getName().contains(searchItem)) {
+                searchResult.add(search);
             }
         }
         return searchResult;
@@ -65,18 +65,18 @@ public class SearchEngine {
 
 
     public Searchable searchBestObject(String searchTerm) {
-        if (innerSearchable.isEmpty()) {
+
+        if (searchItem(searchTerm).isEmpty()) {
             throw new BestResultNotFound(searchTerm);
         }
         Searchable bestResult = null;
         int bestFind = 0;
         int subStringCount;
-        for (LinkedList<Searchable> searchList : innerSearchable.values()) {
-            for (Searchable searchObj : searchList) {
-                if (bestFind < (subStringCount = subStringCount(searchObj.getSearchTerm(), searchTerm))) {
-                    bestFind = subStringCount;
-                    bestResult = searchObj;
-                }
+        for (Searchable searchObj : searchItem(searchTerm)) {
+            //System.out.println(" = " + searchObj.getSearchTerm());
+            if (bestFind < (subStringCount = subStringCount(searchObj.getSearchTerm(), searchTerm))) {
+                bestFind = subStringCount;
+                bestResult = searchObj;
             }
         }
         if (bestResult == null) {
@@ -97,4 +97,5 @@ public class SearchEngine {
         }
         return count;
     }
+
 }

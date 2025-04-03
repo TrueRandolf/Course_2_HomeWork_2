@@ -2,42 +2,34 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class ProductBasket {
 
-    Map<String, LinkedList<Product>> innerBasket = new HashMap<>();
+    Set<Product> innerBasket = new HashSet<>();
 
     public void addToBasket(Product product) {
-        if (innerBasket.containsKey(product.getName())) {
-            innerBasket.get(product.getName()).add(product);
-        } else {
-            LinkedList<Product> mapTail = new LinkedList<>();
-            mapTail.add(product);
-            innerBasket.put(product.getName(), mapTail);
-        }
+        innerBasket.add(product);
     }
 
     public void printBasket() {
         if (innerBasket.isEmpty()) {
-            System.out.println("в корзине пусто");
+            System.out.println("список пуст");
             return;
         }
+
         int specialCounter = 0;
         long sumPrice = 0;
-        for (LinkedList<Product> tail : innerBasket.values()) {
-            for (Product prod : tail) {
-                sumPrice += prod.getPrice();
-                if (prod.isSpecial()) {
-                    specialCounter++;
-                }
-                System.out.println(prod);
+        for (Product tail : innerBasket) {
+            sumPrice += tail.getPrice();
+            if (tail.isSpecial()) {
+                specialCounter++;
             }
+            System.out.println(tail);
         }
         System.out.println("Итого:<" + sumPrice + ">");
         System.out.println("Специальных товаров:<" + specialCounter + ">");
+
     }
 
     public void clearBasket() {
@@ -47,14 +39,26 @@ public class ProductBasket {
 
     public LinkedList<Product> removeProductFromBasket(String name) {
         LinkedList<Product> removedProducts = new LinkedList<>();
-        if (!innerBasket.containsKey(name)) {
+        if (innerBasket.isEmpty()) {
             System.out.println("Список пуст");
             return removedProducts;
         }
-        removedProducts = innerBasket.get(name);
-        innerBasket.remove(name);
+        Product product;
+        Iterator<Product> iterator = innerBasket.iterator();
+        while (iterator.hasNext()) {
+            product = iterator.next();
+            if (product.getName().equals(name)) {
+                removedProducts.add(product);
+            }
+        }
+        if (removedProducts.isEmpty()) {
+            System.out.println("список пуст");
+            return removedProducts;
+        }
+        for (Product reProduct : removedProducts) {
+            innerBasket.remove(reProduct);
+        }
         return removedProducts;
     }
 
 }
-
